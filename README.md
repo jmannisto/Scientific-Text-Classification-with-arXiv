@@ -27,12 +27,18 @@ There are limitations in the above sources (namely lack of humanities based rese
 <details><summary>Pre Processing</summary>
 <p>
 
+- [ ] lowercase
+- [ ] remove stopwords
+- [ ] remove punctuations and numbers
+- [ ] Convert article categories
+
 </p>
 </details>
 
 
 <details><summary>Exploratory Data Analysis and Visualizations</summary>
 <p>
+
 
 </p>
 </details>
@@ -48,3 +54,4 @@ There are limitations in the above sources (namely lack of humanities based rese
 - [Draft Project Decomposition](https://docs.google.com/document/d/102TATCgmh8JINFmS2d3FiRgyh7Jk_fAC07AcxZFn96Q/edit?usp=sharing)
 - [Data set](https://helsinkifi-my.sharepoint.com/:u:/g/personal/mannisjo_ad_helsinki_fi/EebC5gwEI19IqnqSxv5vKFkBVGfp9qzj5Ilf-KSWyLZa9A?e=OlJH7u) 
   *make sure to be logged into your helsinki email! 
+- [ArXiv Category Taxonomy](https://arxiv.org/category_taxonomy)
