@@ -16,10 +16,6 @@ data['abstract'] = word_tokenize(data['abstract'])
 #lowercase
 data['abstract'] = [token.str.lower() for token in data['abstract']]
 
-#TODO: Convert categories
-# data['abstract'] = data['abstract'].replace([what], [with what?])
-#can also use LabelEncoder
-
 #remove numbers and punctuation
 data['abstract'] = [token for token in data['abstract'] if token != r'[\W(\d.*)]']
 #removes any token that is non-alphanumeric or begins with a number
@@ -30,4 +26,14 @@ stop = stopwords.words('english')
 data['abstract'] = [token for token in data['abstract'] if token not in stop]
 #test['abstract'] = test['abstract'].apply(lambda x: ' '.join([word for word in x.split() if word not in (stop)]))
 
+#remove category subidentifies (indicated by a period after the category)
+data["categories"] = data["categories"].str.replace(r"\..+\b","", regex=True)
+#remove duplicate categories
+data["categories"] = data["categories"].str.replace(r'\b(\w+)( \1\b)+', r'\1', regex=True)
+
+#TODO: Convert categories
+# data['categories'] = data['categories'].replace([what], [with what?])
+#can also use LabelEncoder
+
 #TODO: split into test and train data
+
