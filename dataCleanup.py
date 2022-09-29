@@ -2,6 +2,7 @@ import pandas as pd
 import json
 from nltk.corpus import stopwords #note: make sure to have nltk downloaded
 from nltk.tokenize import word_tokenize
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 #if we want to use LabelEncoder for converting our categories
 #from sklearn.preprocessing import LabelEncoder 
@@ -26,6 +27,15 @@ stop = stopwords.words('english')
 data['abstract'] = [token for token in data['abstract'] if token not in stop]
 #test['abstract'] = test['abstract'].apply(lambda x: ' '.join([word for word in x.split() if word not in (stop)]))
 
+#TODO: tfidf
+#defaults at first
+#tweak pending results 
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(data['abstract'])
+tfidf_matrix = vectorizer.get_feature_names_out()
+
+#TODO: normalize # of vectors within each row
+
 #remove category subidentifies (indicated by a period after the category)
 data["categories"] = data["categories"].str.replace(r"\..+\b","", regex=True)
 #remove duplicate categories
@@ -33,7 +43,7 @@ data["categories"] = data["categories"].str.replace(r'\b(\w+)( \1\b)+', r'\1', r
 
 #TODO: Convert categories
 #convert categories into arrays
-#
+data["categories"] = data["categories"].str.split(' ') #I don't think this actually returns an array though? 
 #hold off on labeling numerically, change if needed during training process
 #data['categories'] = data['categories'].replace([what], [with what?])
 #can also use LabelEncoder
