@@ -12,6 +12,7 @@ data = pd.read_json('arxivSmall.json')
 
 #Tokenize
 data['abstract'] = word_tokenize(data['abstract'])
+#data['abstract'] = data['abstract'].apply(word_tokenize)
 
 #lowercase
 data['abstract'] = [token.str.lower() for token in data['abstract']]
@@ -20,8 +21,7 @@ data['abstract'] = [token.str.lower() for token in data['abstract']]
 data['abstract'] = [token for token in data['abstract'] if token != r'[\W(\d.*)]']
 #removes any token that is non-alphanumeric or begins with a number
 
-#TODO: remove stop words 
-#QUESTION: should this be done before or after the punctuation? 
+#remove stop words  
 stop = stopwords.words('english')
 data['abstract'] = [token for token in data['abstract'] if token not in stop]
 #test['abstract'] = test['abstract'].apply(lambda x: ' '.join([word for word in x.split() if word not in (stop)]))
@@ -32,7 +32,10 @@ data["categories"] = data["categories"].str.replace(r"\..+\b","", regex=True)
 data["categories"] = data["categories"].str.replace(r'\b(\w+)( \1\b)+', r'\1', regex=True)
 
 #TODO: Convert categories
-# data['categories'] = data['categories'].replace([what], [with what?])
+#convert categories into arrays
+#
+#hold off on labeling numerically, change if needed during training process
+#data['categories'] = data['categories'].replace([what], [with what?])
 #can also use LabelEncoder
 
 #TODO: split into test and train data
