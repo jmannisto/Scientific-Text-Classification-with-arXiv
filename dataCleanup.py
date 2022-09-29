@@ -11,11 +11,11 @@ data = pd.read_json('arxivSmall.json')
 #NOTE: we can also use arxiv API by using arxiv on github: https://github.com/lukasschwab/arxiv.py
 
 #Tokenize
-data['abstract'].apply(lambda x: word_tokenize(x), axis=1)
+data['abstract'].apply(word_tokenize, axis=1)
 #data['abstract'] = data['abstract'].apply(word_tokenize)
 
 #lowercase
-data['abstract'].apply(lambda x: [token.str.lower() for token in x], axis=1)
+data['abstract'].apply(lambda x: [token.lower() for token in x], axis=1)
 
 #remove numbers and punctuation
 data['abstract'].apply(lambda x: [token for token in x if token != r'[\W(\d.*)]'], axis=1)
