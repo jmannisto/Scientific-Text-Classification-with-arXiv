@@ -3,8 +3,18 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 from PIL import Image
+import seaborn as sns
 
-#TODO: visualization of # of articles by category (top 10/15?)
+#visualization of # of articles by category
+#plot top 20 categories
+highToLow = data.groupby('categories').size().sort_values(ascending=False)
+highToLow.iloc[:20].plot(kind='bar')
+
+#plotting categories that have at least 10,000 articles
+ax = highToLow.iloc[:20].plot(kind='barh', title = 'Categories with at least 10,000 articles')
+ax.bar_label(ax.containers[0])
+plt.xlabel("Article Count")
+plt.ylabel("Categories")
 
 #TODO: visualization of test/train data by category
 
