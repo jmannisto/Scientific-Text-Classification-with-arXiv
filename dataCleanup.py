@@ -3,6 +3,9 @@ import json
 from nltk.corpus import stopwords #note: make sure to have nltk downloaded
 from nltk.tokenize import word_tokenize, sent_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer 
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+
 #if we want to use LabelEncoder for converting our categories
 #from sklearn.preprocessing import LabelEncoder 
 
@@ -34,10 +37,11 @@ data["categories"] = data["categories"].str.replace(r"\.[A-Za-z]{2,}\b|\.[A-Za-z
 #remove duplicate categories
 data["categories"] = data["categories"].str.replace(r'\b([\w-]+)( \1\b)+', r'\1', regex=True)
 
-#TODO: Convert categories
+
 #convert categories into arrays
 data["categories"] = data["categories"].str.split(' ') 
-#hold off on labeling numerically, change if needed during training process
+
+#TODO: Encode categories (run into ValueError: setting an array element with a sequence if not)
 
 #TODO: tfidf
 #defaults at first
@@ -49,5 +53,11 @@ features = vectorizer.get_feature_names_out()
 
 #TODO: normalize # of vectors within each row
 
-#TODO: split into test and train data
+#split into test and train data
+X = data['abstract']
+y = data['categories']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
+#TODO: Train model
+neigh = KNeighborsClassifier(n_neighbors=5) #play around with K
+neigh.fit(X_train, y_train)
