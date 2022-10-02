@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 from PIL import Image
 
+#TODO: visualization of # of articles by category (top 10/15?)
+
 #TODO: visualization of test/train data by category
 
 # Wordcloud of high use words across categories
@@ -22,7 +24,7 @@ plt.axis("off")
 plt.show()
 
 
-#TODO: wordcloud of high use words within categories
+#TODO: wordcloud of high use words within categories/barchart? 
 
 #TODO: plot the tfidf scores of words?
 
