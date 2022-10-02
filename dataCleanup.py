@@ -5,9 +5,10 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
+from nltk.stem.porter import *
 
 #if we want to use LabelEncoder for converting our categories
-#from sklearn.preprocessing import LabelEncoder 
+from sklearn.preprocessing import LabelEncoder 
 
 #Read the data
 data = pd.read_json('arxivSmall.json')
@@ -30,6 +31,11 @@ data['abstract'] = data['abstract'].apply(word_tokenize)
 stop = stopwords.words('english')
 data['abstract'] = data['abstract'].apply(lambda x: [token for token in x if token not in stop])
 
+#stem
+ps = PorterStemmer() # Takes a while
+#set up as if there isn't tokens
+data["abstract"] = data["abstract"].apply(lambda x: ' '.join([ps.stem(word) for word in str(x).split()]))
+
 #remove category subidentifies (indicated by a period after the category)
 #remove any instance of '.' followed by at least two letters or . followed by at least two letters, a dash '-' and more letters
 data["categories"] = data["categories"].str.replace(r"\.[A-Za-z]{2,}\b|\.[A-Za-z]{2,}-[A-Za-z]{1,}\b","", regex=True) 
@@ -37,11 +43,14 @@ data["categories"] = data["categories"].str.replace(r"\.[A-Za-z]{2,}\b|\.[A-Za-z
 #remove duplicate categories
 data["categories"] = data["categories"].str.replace(r'\b([\w-]+)( \1\b)+', r'\1', regex=True)
 
-
 #convert categories into arrays
 data["categories"] = data["categories"].str.split(' ') 
 
 #TODO: Encode categories (run into ValueError: setting an array element with a sequence if not)
+le = preprocessing.LabelEncoder()
+le.fit(data['categories'])
+data['encoded_categories'] = le.transform(data['categories'])
+data.head()
 
 #TODO: tfidf
 #defaults at first
