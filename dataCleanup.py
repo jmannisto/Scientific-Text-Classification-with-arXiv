@@ -21,9 +21,6 @@ data['abstract'] = data['abstract'].str.lower()
 data['abstract'] = data['abstract'].str.replace(r'[^\w\s]+', '', regex=True)
 #removes any token that is non-alphanumeric or begins with a number
 
-#do we need to sentence tokenize first?
-#data['abstract'] = data['abstract'].apply(sent_tokenize)
-
 #Tokenize
 data['abstract'] = data['abstract'].apply(word_tokenize)
 
