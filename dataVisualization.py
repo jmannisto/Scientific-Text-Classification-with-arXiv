@@ -39,10 +39,13 @@ plt.show()
 #TODO: plot the tfidf scores of words?
 
 #List out highest tfidf scores:
+score = tfidf_matrix[0]
+df = pd.DataFrame(score.T.todense(), index=vectorizer.get_feature_names_out(), columns=["Tfidf"]) 
+df.sort_values(by=["Tfidf"],ascending=False)
+df.sort_values(by=["Tfidf"],ascending=False).head(10)
+
 K = 15 # choose K highest
-
 print("Words with highest TF/IDF:")
-
 # get indices of words with highest TF/IDF score 
 #(np.flip for descending order of indices)
 idx = np.flip(np.argsort(tfidf_matrix[0, :].A)[0][-K:])
