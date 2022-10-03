@@ -31,10 +31,11 @@ data['abstract'] = data['abstract'].apply(word_tokenize)
 stop = stopwords.words('english')
 data['abstract'] = data['abstract'].apply(lambda x: [token for token in x if token not in stop])
 
-#stem
-ps = PorterStemmer() # Takes a while
-#set up as if there isn't tokens
-data["abstract"] = data["abstract"].apply(lambda x: ' '.join([ps.stem(word) for word in str(x).split()]))
+#lemmatize (set up as if it's not tokenized)
+from nltk.stem import WordNetLemmatizer
+wnl = WordNetLemmatizer()
+data["lemma abstract"] = data["abstract"].apply(lambda x: ' '.join([wnl.lemmatize(word) for word in str(x).split()]))
+data.head()
 
 #remove category subidentifies (indicated by a period after the category)
 #remove any instance of '.' followed by at least two letters or . followed by at least two letters, a dash '-' and more letters
@@ -55,7 +56,7 @@ data.head()
 #TODO: tfidf
 #defaults at first
 #tweak pending results 
-vectorizer = TfidfVectorizer(max_df = 1.0)
+vectorizer = TfidfVectorizer(max_df = 1.0) #edit max_df as we see fit
 abstracts = data.abstract.astype(str) #can't pass tokens through vectorizer 
 tfidf_matrix = vectorizer.fit_transform(abstracts)
 features = vectorizer.get_feature_names_out()
@@ -63,10 +64,17 @@ features = vectorizer.get_feature_names_out()
 #TODO: normalize # of vectors within each row
 
 #split into test and train data
-X = data['abstract']
-y = data['categories']
+X = tfidf_matrix
+y = data['encoded_categories']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 #TODO: Train model
 neigh = KNeighborsClassifier(n_neighbors=5) #play around with K
 neigh.fit(X_train, y_train)
+model_predict = neigh.predict(X_test) #very slow?
+print("Model Predictor Accuracy:")
+print(neigh.score(X_test, y_test)) 
+
+from sklearn.metrics import classification_report
+print("Model Classification Report")
+print(classification_report(y_test, model_predict))
