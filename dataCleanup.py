@@ -22,6 +22,12 @@ data["abstract"] = data['abstract'].apply(lambda x: ' '.join([word for word in s
 wnl = WordNetLemmatizer()
 data["lemma abstract"] = data["abstract"].apply(lambda x: ' '.join([wnl.lemmatize(word) for word in str(x).split()]))
 
+# Remove articles with abstracts less than 50 words
+length = []
+[length.append(len(str(text))) for text in data['abstract']]
+data['length'] = length
+data = data.drop(data['abstract'][data['length'] < 50].index, axis=0)
+
 #remove category subidentifies (indicated by a period after the category)
 data["categories"] = data["categories"].str.replace(r"\.[A-Za-z]{2,}\b|\.[A-Za-z]{2,}-[A-Za-z]{1,}\b","", regex=True)
 
