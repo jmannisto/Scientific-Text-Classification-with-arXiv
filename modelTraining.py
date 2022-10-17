@@ -56,6 +56,12 @@ print(knn.score(X_test_knn, y_test))
 dump(knn, 'knn_model.joblib') 
 #load with:
 #knn = load('knn_model.joblib') 
+      
+#with 30k samples from each 
+#results = 0.7899
+neigh = KNeighborsClassifier(n_neighbors=25) 
+neigh.fit(X_train_knn, y_train_knn)
+print(neigh.score(X_test, y_test))
 
 #dummy classifier for comparison
 #results = 0.104
@@ -64,3 +70,12 @@ dummy_classifier = DummyClassifier(strategy = "most_frequent")
 dummy_classifier.fit(X_train_knn, y_train)
 print("Dummy Predictor Accuracy:")
 print(dummy_classifier.score(X_test_knn, y_test)) 
+
+#SDG 
+#results: 0.84
+# when using loss="perceptron" results are 0.88
+from sklearn.linear_model import SGDClassifier
+sdg = SGDClassifier()
+sdg.fit(X_lemma_train_knn, y_lemma_knn)
+print(sdg.score(X_test, y_test))
+      
