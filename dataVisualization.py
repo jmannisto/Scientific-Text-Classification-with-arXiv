@@ -33,11 +33,6 @@ plt.title("TF/IDF Wordcloud")
 plt.axis("off")
 plt.show()
 
-
-#TODO: wordcloud of high use words within categories/barchart? 
-
-#TODO: plot the tfidf scores of words?
-
 #List out highest tfidf scores:
 score = tfidf_matrix[0]
 df = pd.DataFrame(score.T.todense(), index=vectorizer.get_feature_names_out(), columns=["Tfidf"]) 
