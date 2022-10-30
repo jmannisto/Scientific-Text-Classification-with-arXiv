@@ -16,7 +16,6 @@ ax.bar_label(ax.containers[0])
 plt.xlabel("Article Count")
 plt.ylabel("Categories")
 
-#TODO: visualization of test/train data by category
 
 # Wordcloud of high use words across categories
 K = 20 # choose some more words for the wordclouds
