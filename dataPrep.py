@@ -136,4 +136,4 @@ def tfidfVectorize(X_train, X_test):
     vectorizer = TfidfVectorizer(max_df = 0.75)
     X_train_matrix = vectorizer.fit_transform(X_train)
     X_test_matrix = vectorizer.transform(X_test)
-    return X_train_matrix, X_test_matrix
+    return X_train_matrix, X_test_matrix, vectorizer
