@@ -7,6 +7,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 #fileName = "cleanedData.json"
+#to upload category dictionary:
+def loadCategoryDict(file_name):
+    with open(file_name) as json_file:
+        categoryKeysLoaded = json.load(json_file)
 
 def createTrainingData(sample_size):
     sampleSize = sample_size
