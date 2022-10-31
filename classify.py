@@ -20,7 +20,7 @@ def main():
     input_text = np.array([input_text])
     input_vector = model_vectorizer.transform(input_text)
     prediction = model.predict(input_vector)[0]
-    print(prediction)
+    print('Predicted cateogry: ' + cateforydict[str(prediction)])
 
 if __name__ == "__main__":
     main()
