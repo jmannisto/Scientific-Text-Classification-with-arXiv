@@ -11,7 +11,7 @@ Currently there is a lack of ability to accurately categorize or sort scientific
 
 The 'trainAcademicClassifier.py' program trains the model using the arXiv dataset. It takes 1 command line argument, the file name/path to the training data. It produces two files, the model .pkl file and the vectorizer .pkl file, both necesssary for predicting with the model. 
  
-Example: 'python trainAcademicClassifier.py training_data.json 30000'
+Example: 'python trainAcademicClassifier.py training_data.json'
  
 Given that these two files have been produced the 'classify.py' program can be run to classify a single text using the model. It also takes one command line argument, the file name/path to the text you want to classify, in .txt format. The program analyzes the text and prints the predicted category.
  
