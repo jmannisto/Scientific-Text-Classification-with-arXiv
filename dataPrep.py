@@ -17,8 +17,8 @@ def createTrainingData(sample_size, data):
     #creates two dataframes, one that only includes data that has one category assignment, another that has data that has two category assignments
     oneCat,twoCat = dfSplit(data)
     #balance data
-    balancedData = getSamples(sampleSize, oneCat, twoCat)
-    X_train, X_test, y_train, y_test = splitTestTrain(balancedData)
+    #balancedData = getSamples(sampleSize, oneCat, twoCat)
+    X_train, X_test, y_train, y_test = splitTestTrain(oneCat) #previously sampled balanced data but resulted in poorer model performance
     model_train, model_test, vectorizer = tfidfVectorize(X_train, X_test)
     return model_Train, model_test, y_train, y_test, vectorizer
 
@@ -103,6 +103,7 @@ def dfSplit(data):
     return soloData, duoData
 
 #balance the data and get samples
+#outdated method previously used to do combination over and undersample but resulted in poorer model performance when used
 def getSamples(sample_size, soloData, duoData):
     balancedData = pd.DataFrame()
     catGroup = soloData.groupby("categories").count().reset_index()
