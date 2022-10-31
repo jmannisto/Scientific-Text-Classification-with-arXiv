@@ -11,10 +11,7 @@ def main():
     except ValueError:
         print('Error loading training data file. Pass training data as .json file in command line') 
     else:
-        if len(sys.argv) == 1:
-            X_train, __Xtest__, y_train, __ytest__, vectorizer = createTrainingData(20000, cleaned_data)
-        else:
-            X_train, __Xtest__, y_train, __ytest__, vectorizer= createTrainingData(int(sys.argv[1]), cleaned_data)
+        X_train, __Xtest__, y_train, __ytest__, vectorizer = createTrainingData(cleaned_data)
         model = LogisticRegression(penalty='l2', tol=1e-4, C=1.0, solver='lbfgs', max_iter=500, multi_class='ovr')
         model.fit(X_train, y_train)
         joblib.dump(model, 'academicClassifierModel.pkl')
