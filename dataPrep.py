@@ -12,15 +12,14 @@ def loadCategoryDict(file_name):
     with open(file_name) as json_file:
         categoryKeysLoaded = json.load(json_file)
 
-def createTrainingData(sample_size, data):
-    sampleSize = sample_size
+def createTrainingData(data):
     #creates two dataframes, one that only includes data that has one category assignment, another that has data that has two category assignments
     oneCat,twoCat = dfSplit(data)
     #balance data
-    balancedData = getSamples(sampleSize, oneCat, twoCat)
-    X_train, X_test, y_train, y_test = splitTestTrain(balancedData)
-    model_train, model_test = tfidfVectorize(X_train, X_test)
-    return model_Train, model_test, y_train, y_test
+    #balancedData = getSamples(sampleSize, oneCat, twoCat)
+    X_train, X_test, y_train, y_test = splitTestTrain(oneCat) #previously sampled balanced data but resulted in poorer model performance
+    model_train, model_test, vectorizer = tfidfVectorize(X_train, X_test)
+    return model_Train, model_test, y_train, y_test, vectorizer
 
 def cleanData(fileName):
     data = pd.read_json(fileName)
@@ -103,6 +102,7 @@ def dfSplit(data):
     return soloData, duoData
 
 #balance the data and get samples
+#outdated method previously used to do combination over and undersample but resulted in poorer model performance when used
 def getSamples(sample_size, soloData, duoData):
     balancedData = pd.DataFrame()
     catGroup = soloData.groupby("categories").count().reset_index()
@@ -136,4 +136,49 @@ def tfidfVectorize(X_train, X_test):
     vectorizer = TfidfVectorizer(max_df = 0.75)
     X_train_matrix = vectorizer.fit_transform(X_train)
     X_test_matrix = vectorizer.transform(X_test)
-    return X_train_matrix, X_test_matrix
+    return X_train_matrix, X_test_matrix, vectorizer
+
+#split into two dataframes:
+def dfSplit(data):
+    #create dataframe that only has one category
+    soloData = data[data['categories'].str.split().str.len().lt(2)] #only 1 category
+    #create dataframe that has more than one but less than 3 categories (i.e. 2)
+    duoData = data[data['categories'].str.split().str.len().lt(3)]
+    duoData = data[data['categories'].str.split().str.len().gt(1)]
+    return soloData, duoData
+
+#balance the data and get samples
+def getSamples(sample_size, soloData, duoData):
+    balancedData = pd.DataFrame()
+    catGroup = soloData.groupby("categories").count().reset_index()
+    for category in catGroup.categories:
+        try:
+            #try sampling the data
+            balancedData = balancedData.append(soloData[soloData["categories"] == category].sample(n = sample_size))
+        
+        except ValueError: #thrown when data size is too small for sample
+            #calculate how much is needed from double cat group to reach sample-size
+            amtNeed = (sample_size - (catGroup.loc[catGroup["categories"] == category, 'lemma abstract'].item()))
+            #find relevant double category groups that have the category we're search for in them
+            contain_values = duoData[duoData['categories'].str.contains(category)]
+            #sample the needed sample size amount from double category group
+            contain_values_sampled = contain_values.sample(n=amtNeed, replace=True)  # oversample if needed
+            #combine datasets 
+            sampleData = pd.concat([contain_values_sampled, soloData[soloData['categories'].str.contains(category)]])
+            #add sample data to the collection of balanced data
+            balancedData = balancedData.append(sampleData)
+    return balancedData
+
+def splitTestTrain(sampleData):
+    # splitting test and train data ahead of time
+    X = sampleData["lemma abstract"]
+    y = sampleData['encoded_categories']
+    #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    return train_test_split(X, y, test_size=0.2)
+
+#TF IDF with lemmas (performs better than stems)
+def tfidfVectorize(X_train, X_test):
+    vectorizer = TfidfVectorizer(max_df = 0.75)
+    X_train_matrix = vectorizer.fit_transform(X_train)
+    X_test_matrix = vectorizer.transform(X_test)
+    return X_train_matrix, X_test_matrix, vectorizer
