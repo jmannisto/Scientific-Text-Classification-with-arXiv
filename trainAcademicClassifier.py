@@ -1,6 +1,4 @@
 import dataPrep
-import numpy as np
-import pandas as pd
 import sys
 from sklearn.linear_model import LogisticRegression
 import joblib
