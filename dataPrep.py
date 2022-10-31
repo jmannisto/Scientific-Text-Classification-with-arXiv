@@ -12,8 +12,7 @@ def loadCategoryDict(file_name):
     with open(file_name) as json_file:
         categoryKeysLoaded = json.load(json_file)
 
-def createTrainingData(sample_size, data):
-    sampleSize = sample_size
+def createTrainingData(data):
     #creates two dataframes, one that only includes data that has one category assignment, another that has data that has two category assignments
     oneCat,twoCat = dfSplit(data)
     #balance data
