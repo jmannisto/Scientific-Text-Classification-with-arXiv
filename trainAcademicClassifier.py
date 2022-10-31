@@ -9,7 +9,7 @@ def main():
     try:
         cleaned_data = cleanData(str(sys.argv[0]))
     except ValueError:
-        print('Error laoding training data file. Pass training data as .json file in command line') 
+        print('Error loading training data file. Pass training data as .json file in command line') 
     else:
         if len(sys.argv) == 1:
             X_train, __Xtest__, y_train, __ytest__, vectorizer = createTrainingData(20000, cleaned_data)
