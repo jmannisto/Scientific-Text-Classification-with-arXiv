@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from nltk.corpus import stopwords #note: make sure to have nltk downloaded
 from nltk.stem.porter import *
 from nltk.stem import WordNetLemmatizer
