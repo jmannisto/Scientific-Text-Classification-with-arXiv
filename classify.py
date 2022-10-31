@@ -10,7 +10,7 @@ def main():
     with open('academicClassifierVectorizer.pkl') as vectorizer:
         model_vectorizer = vectorizer
     with open(str(sys.argv[0])) as input:
-        input_text = input
+        input_text = str([line for line in input])
     categorydict = loadCategoryDict('categoryKeys.json')
     input_text.str.lower()
     input_text.str.replace(r'[^\w\s]+', '', regex=True)
